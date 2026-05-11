@@ -56,6 +56,10 @@ export default async function AdminPlatformsPage({ searchParams }: Props) {
         </Link>
       </div>
 
+      <div className="mt-4 rounded-xl border border-blue-100 bg-blue-50/50 p-3 text-sm text-blue-800">
+        管理所有平台列表。点击「Edit」可修改平台信息、Affiliate 链接、评分等。<strong>绿色 Active = 前台可见，黄色 Pending = 待审核不可见。</strong>
+      </div>
+
       {/* Status Tabs */}
       <div className="mt-4 flex gap-1">
         {statusTabs.map((t) => (

@@ -50,10 +50,12 @@ export default async function CrawlJobsPage({ searchParams }: Props) {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold text-gray-900">Crawl Jobs</h1>
-      <p className="mt-1 text-sm text-gray-500">
-        Monitor the crawler task queue. Failed jobs can be retried.
-      </p>
+      <h1 className="text-2xl font-bold text-gray-900">爬虫任务</h1>
+      <p className="mt-1 text-sm text-gray-500">监控爬虫任务队列，失败的任务可以重试。</p>
+      <div className="mt-4 rounded-xl border border-blue-100 bg-blue-50/50 p-3 text-sm text-blue-800">
+        爬虫任务状态说明：<strong>Pending</strong>（排队中）、<strong>Running</strong>（执行中）、<strong>Done</strong>（已完成，数据已入库）、<strong>Failed</strong>（失败，可点 Retry 重试）。
+        失败的可以展开 Error 查看原因。如果大量 403 说明目标站屏蔽了爬虫，属于正常现象，可以去手动录入该平台信息。
+      </div>
 
       {/* Status Tabs */}
       <div className="mt-4 flex gap-1">
