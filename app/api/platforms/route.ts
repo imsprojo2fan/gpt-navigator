@@ -20,25 +20,13 @@ export async function GET(request: NextRequest) {
 
     const where: Prisma.PlatformWhereInput = { status: "active" };
 
-    if (taskTypes.length > 0) {
-      where.features = {
-        ...(where.features as Prisma.PlatformFeatureListRelationFilter || {}),
-        some: { taskTypes: { hasSome: taskTypes } },
-      };
-    }
-
-    if (paymentMethods.length > 0) {
-      where.features = {
-        ...(where.features as Prisma.PlatformFeatureListRelationFilter || {}),
-        some: { paymentMethods: { hasSome: paymentMethods } },
-      };
-    }
-
-    if (regions.length > 0) {
-      where.features = {
-        ...(where.features as Prisma.PlatformFeatureListRelationFilter || {}),
-        some: { regions: { hasSome: regions } },
-      };
+    // Build feature filter (1-to-1 relation, use `is`)
+    const featureWhere: Prisma.PlatformFeatureWhereInput = {};
+    if (taskTypes.length > 0) featureWhere.taskTypes = { hasSome: taskTypes };
+    if (paymentMethods.length > 0) featureWhere.paymentMethods = { hasSome: paymentMethods };
+    if (regions.length > 0) featureWhere.regions = { hasSome: regions };
+    if (Object.keys(featureWhere).length > 0) {
+      where.features = { is: featureWhere };
     }
 
     let orderBy: Prisma.PlatformOrderByWithRelationInput = { createdAt: "desc" };

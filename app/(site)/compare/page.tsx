@@ -107,7 +107,7 @@ export default async function ComparePage({ searchParams }: Props) {
                 label="Task Types"
                 values={platforms.map(
                   (p) =>
-                    p.features[0]?.taskTypes
+                    p.features?.taskTypes
                       .map((t) => TASK_TYPE_LABELS[t as TaskType] || t)
                       .join(", ") || "N/A"
                 )}
@@ -116,7 +116,7 @@ export default async function ComparePage({ searchParams }: Props) {
                 label="Payment Methods"
                 values={platforms.map(
                   (p) =>
-                    p.features[0]?.paymentMethods
+                    p.features?.paymentMethods
                       .map((m) => PAYMENT_METHOD_LABELS[m as PaymentMethod] || m)
                       .join(", ") || "N/A"
                 )}
@@ -125,18 +125,18 @@ export default async function ComparePage({ searchParams }: Props) {
                 label="Regions"
                 values={platforms.map(
                   (p) =>
-                    p.features[0]?.regions
+                    p.features?.regions
                       .map((r) => REGION_LABELS[r as keyof typeof REGION_LABELS] || r)
                       .join(", ") || "N/A"
                 )}
               />
               <CompareRow
                 label="Mobile App"
-                values={platforms.map((p) => (p.features[0]?.hasMobileApp ? "Yes" : "No"))}
+                values={platforms.map((p) => (p.features?.hasMobileApp ? "Yes" : "No"))}
               />
               <CompareRow
                 label="Beginner Friendly"
-                values={platforms.map((p) => (p.features[0]?.isBeginnerFriendly ? "Yes" : "No"))}
+                values={platforms.map((p) => (p.features?.isBeginnerFriendly ? "Yes" : "No"))}
               />
             </tbody>
           </table>

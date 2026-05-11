@@ -30,26 +30,13 @@ export default async function PlatformsPage({ searchParams }: Props) {
   // Build where clause
   const where: Prisma.PlatformWhereInput = { status: "active" };
 
-  if (taskTypes.length > 0) {
-    where.features = { some: { taskTypes: { hasSome: taskTypes } } };
-  }
-  if (payments.length > 0) {
-    where.features = {
-      ...(where.features as Prisma.PlatformFeatureListRelationFilter || {}),
-      some: {
-        ...((where.features as Prisma.PlatformFeatureListRelationFilter)?.some as object || {}),
-        paymentMethods: { hasSome: payments },
-      },
-    };
-  }
-  if (regions.length > 0) {
-    where.features = {
-      ...(where.features as Prisma.PlatformFeatureListRelationFilter || {}),
-      some: {
-        ...((where.features as Prisma.PlatformFeatureListRelationFilter)?.some as object || {}),
-        regions: { hasSome: regions },
-      },
-    };
+  // Build feature filter (1-to-1 relation, use `is`)
+  const featureWhere: Prisma.PlatformFeatureWhereInput = {};
+  if (taskTypes.length > 0) featureWhere.taskTypes = { hasSome: taskTypes };
+  if (payments.length > 0) featureWhere.paymentMethods = { hasSome: payments };
+  if (regions.length > 0) featureWhere.regions = { hasSome: regions };
+  if (Object.keys(featureWhere).length > 0) {
+    where.features = { is: featureWhere };
   }
 
   // Build orderBy

@@ -69,17 +69,22 @@ export interface PlatformListParams {
 export function toPlatform(
   p: Prisma.PlatformGetPayload<{ include: { features: true } }>
 ): PlatformWithFeatures {
+  const f = p.features;
   return {
     ...p,
     status: p.status as PlatformStatus,
     rating: p.rating ? Number(p.rating) : null,
     trustpilotScore: p.trustpilotScore ? Number(p.trustpilotScore) : null,
-    features: p.features.map((f) => ({
-      ...f,
-      taskTypes: f.taskTypes as TaskType[],
-      paymentMethods: f.paymentMethods as PaymentMethod[],
-      regions: f.regions as Region[],
-    })),
+    features: f
+      ? [
+          {
+            ...f,
+            taskTypes: f.taskTypes as TaskType[],
+            paymentMethods: f.paymentMethods as PaymentMethod[],
+            regions: f.regions as Region[],
+          },
+        ]
+      : [],
   };
 }
 

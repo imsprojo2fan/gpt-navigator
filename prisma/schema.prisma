@@ -1,7 +1,6 @@
-// Prisma schema for GPT Navigator
-
 generator client {
-  provider = "prisma-client-js"
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "rhel-openssl-3.0.x"]
 }
 
 datasource db {
@@ -9,62 +8,51 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// -------------------------------------------------------
-// platforms — 平台主表
-// -------------------------------------------------------
 model Platform {
-  id             Int       @id @default(autoincrement())
-  name           String    @db.VarChar(100)
-  slug           String    @unique @db.VarChar(100)
-  description    String?   @db.Text
-  logoUrl        String?   @map("logo_url") @db.VarChar(500)
-  websiteUrl     String    @map("website_url") @db.VarChar(500)
-  affiliateUrl   String?   @map("affiliate_url") @db.VarChar(500)
-  minCashout     String?   @map("min_cashout") @db.VarChar(50)
-  rating         Decimal?  @db.Decimal(2, 1)
-  trustpilotScore Decimal? @map("trustpilot_score") @db.Decimal(2, 1)
-  trustpilotUrl  String?   @map("trustpilot_url") @db.VarChar(500)
-  isVerified     Boolean   @default(false) @map("is_verified")
-  status         String    @default("active") @db.VarChar(20)
-  createdAt      DateTime  @default(now()) @map("created_at")
-  updatedAt      DateTime  @updatedAt @map("updated_at")
-  lastCrawledAt  DateTime? @map("last_crawled_at")
-
-  features    PlatformFeature[]
-  crawlLogs   CrawlLog[]
+  id              Int              @id @default(autoincrement())
+  name            String           @db.VarChar(100)
+  slug            String           @unique @db.VarChar(100)
+  description     String?
+  logoUrl         String?          @map("logo_url") @db.VarChar(500)
+  websiteUrl      String           @map("website_url") @db.VarChar(500)
+  affiliateUrl    String?          @map("affiliate_url") @db.VarChar(500)
+  minCashout      String?          @map("min_cashout") @db.VarChar(50)
+  rating          Decimal?         @db.Decimal(2, 1)
+  trustpilotScore Decimal?         @map("trustpilot_score") @db.Decimal(2, 1)
+  trustpilotUrl   String?          @map("trustpilot_url") @db.VarChar(500)
+  isVerified      Boolean          @default(false) @map("is_verified")
+  status          String           @default("active") @db.VarChar(20)
+  createdAt       DateTime         @default(now()) @map("created_at")
+  updatedAt       DateTime         @updatedAt @map("updated_at")
+  lastCrawledAt   DateTime?        @map("last_crawled_at")
+  crawlLogs       CrawlLog[]
+  features        PlatformFeature?
 
   @@map("platforms")
 }
 
-// -------------------------------------------------------
-// platform_features — 平台特性
-// -------------------------------------------------------
 model PlatformFeature {
-  id                Int      @id @default(autoincrement())
-  platformId        Int      @map("platform_id")
-  taskTypes         String[] @map("task_types")
-  paymentMethods    String[] @map("payment_methods")
-  regions           String[]
-  hasMobileApp      Boolean  @default(false) @map("has_mobile_app")
-  isBeginnerFriendly Boolean @default(true) @map("is_beginner_friendly")
-
-  platform Platform @relation(fields: [platformId], references: [id])
+  id                 Int      @id @default(autoincrement())
+  platformId         Int      @unique(map: "platform_features_platform_id_unique") @map("platform_id")
+  taskTypes          String[] @map("task_types")
+  paymentMethods     String[] @map("payment_methods")
+  regions            String[]
+  hasMobileApp       Boolean  @default(false) @map("has_mobile_app")
+  isBeginnerFriendly Boolean  @default(true) @map("is_beginner_friendly")
+  platform           Platform @relation(fields: [platformId], references: [id])
 
   @@map("platform_features")
 }
 
-// -------------------------------------------------------
-// crawl_jobs — 爬虫任务队列
-// -------------------------------------------------------
 model CrawlJob {
   id          Int       @id @default(autoincrement())
   targetUrl   String    @map("target_url") @db.VarChar(500)
   sourceSite  String?   @map("source_site") @db.VarChar(100)
   jobType     String?   @map("job_type") @db.VarChar(50)
   status      String    @default("pending") @db.VarChar(20)
-  rawData     String?   @map("raw_data") @db.Text
-  parsedData  Json?     @map("parsed_data") @db.JsonB
-  errorMsg    String?   @map("error_msg") @db.Text
+  rawData     String?   @map("raw_data")
+  parsedData  Json?     @map("parsed_data")
+  errorMsg    String?   @map("error_msg")
   retryCount  Int       @default(0) @map("retry_count")
   createdAt   DateTime  @default(now()) @map("created_at")
   processedAt DateTime? @map("processed_at")
@@ -72,17 +60,13 @@ model CrawlJob {
   @@map("crawl_jobs")
 }
 
-// -------------------------------------------------------
-// crawl_logs — 爬取历史
-// -------------------------------------------------------
 model CrawlLog {
   id         Int      @id @default(autoincrement())
   platformId Int      @map("platform_id")
   crawledAt  DateTime @default(now()) @map("crawled_at")
-  changes    Json?    @db.JsonB
-  snapshot   Json?    @db.JsonB
-
-  platform Platform @relation(fields: [platformId], references: [id])
+  changes    Json?
+  snapshot   Json?
+  platform   Platform @relation(fields: [platformId], references: [id])
 
   @@map("crawl_logs")
 }

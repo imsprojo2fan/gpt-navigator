@@ -45,7 +45,7 @@ export default async function PlatformDetailPage({ params }: Props) {
     notFound();
   }
 
-  const features = platform.features[0];
+  const features = platform.features;
 
   // Similar platforms: same task types, exclude current
   const similar =
@@ -54,7 +54,7 @@ export default async function PlatformDetailPage({ params }: Props) {
           where: {
             status: "active",
             slug: { not: platform.slug },
-            features: { some: { taskTypes: { hasSome: features.taskTypes } } },
+            features: { is: { taskTypes: { hasSome: features.taskTypes } } },
           },
           orderBy: { rating: { sort: "desc", nulls: "last" } },
           take: 3,
