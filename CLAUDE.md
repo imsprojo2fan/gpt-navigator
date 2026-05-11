@@ -11,7 +11,7 @@ GPT Navigator 是一个面向海外英语用户的 GPT 平台导航站。
 通过爬虫自动收录全网"做任务赚钱"平台，用户发现平台后
 点击 Affiliate 链接注册，站长赚取推广佣金。
 
-详细设计见 `project-plan.md`。
+详细设计见 `project-plan.md`，运维实操见 `project-runbook.md`。
 
 ---
 
@@ -52,7 +52,9 @@ GPT Navigator 是一个面向海外英语用户的 GPT 平台导航站。
 │   ├── parsers/           # AI 解析模块
 │   └── requirements.txt
 ├── public/                # 静态资源
+├── .github/workflows/     # GitHub Actions（爬虫定时任务）
 ├── project-plan.md        # 项目规划文档
+├── project-runbook.md     # 运维手册（基础设施、SEO、合规）
 └── CLAUDE.md              # 本文件
 ```
 
@@ -104,7 +106,7 @@ HTTP 状态码：
 - 所有爬虫继承 `BaseSpider` 基类
 - 请求之间加随机延迟 `1-3秒`，避免被封
 - 错误必须记录到 `crawl_jobs.error_msg`，不能静默失败
-- Claude API 调用统一在 `parsers/ai_parser.py`
+- DeepSeek API 调用统一在 `parsers/ai_parser.py`
 
 ---
 
@@ -116,8 +118,11 @@ HTTP 状态码：
 # 数据库
 DATABASE_URL="postgresql://..."
 
-# Claude API（爬虫用）
-ANTHROPIC_API_KEY="sk-ant-..."
+# DeepSeek API（爬虫 AI 解析用）
+DEEPSEEK_API_KEY="sk-..."
+
+# 网站 URL（SEO canonical 用）
+NEXT_PUBLIC_SITE_URL="https://www.ins199.com"
 
 # 管理后台密码
 ADMIN_PASSWORD="..."
@@ -157,7 +162,7 @@ python main.py update      # 更新已有平台
 1. **每次只做一个模块**，做完告诉我，等我确认再继续
 2. **数据库有改动**必须生成 migration 文件
 3. **新增 API**必须同步更新类型定义
-4. **爬虫运行前**检查 `.env` 是否有 `ANTHROPIC_API_KEY`
+4. **爬虫运行前**检查 `.env` 是否有 `DEEPSEEK_API_KEY`
 5. **所有页面**必须有移动端响应式布局
 6. **详情页**是 SEO 核心，`<title>` 和 `<description>` 必须动态生成
 7. **Affiliate 链接**跳转必须加 `target="_blank" rel="noopener noreferrer"`
