@@ -1,6 +1,7 @@
 import { NextRequest } from "next/server";
 import { prisma } from "@/lib/db";
 import { apiSuccess, apiError } from "@/lib/api";
+import { toPlatform } from "@/types/platform";
 
 export async function GET(
   _request: NextRequest,
@@ -16,7 +17,7 @@ export async function GET(
       return apiError("Platform not found", 404);
     }
 
-    return apiSuccess(platform);
+    return apiSuccess(toPlatform(platform));
   } catch {
     return apiError("Failed to fetch platform", 500);
   }

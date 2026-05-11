@@ -1,54 +1,44 @@
 import { NextRequest } from "next/server";
 import { prisma } from "@/lib/db";
 import { apiSuccess, apiError } from "@/lib/api";
+import { toPlatform } from "@/types/platform";
 import type { Prisma } from "@prisma/client";
 
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = request.nextUrl;
 
-    // Filters
     const taskTypes = searchParams.getAll("taskType");
     const paymentMethods = searchParams.getAll("payment");
     const regions = searchParams.getAll("region");
-    // Sort
     const sort = searchParams.get("sort") || "rating";
 
-    // Pagination
     const page = Math.max(1, parseInt(searchParams.get("page") || "1", 10));
     const limit = Math.min(50, Math.max(1, parseInt(searchParams.get("limit") || "20", 10)));
 
-    // Build where clause
     const where: Prisma.PlatformWhereInput = { status: "active" };
 
     if (taskTypes.length > 0) {
       where.features = {
         ...(where.features as Prisma.PlatformFeatureListRelationFilter || {}),
-        some: {
-          taskTypes: { hasSome: taskTypes },
-        },
+        some: { taskTypes: { hasSome: taskTypes } },
       };
     }
 
     if (paymentMethods.length > 0) {
       where.features = {
         ...(where.features as Prisma.PlatformFeatureListRelationFilter || {}),
-        some: {
-          paymentMethods: { hasSome: paymentMethods },
-        },
+        some: { paymentMethods: { hasSome: paymentMethods } },
       };
     }
 
     if (regions.length > 0) {
       where.features = {
         ...(where.features as Prisma.PlatformFeatureListRelationFilter || {}),
-        some: {
-          regions: { hasSome: regions },
-        },
+        some: { regions: { hasSome: regions } },
       };
     }
 
-    // Build orderBy
     let orderBy: Prisma.PlatformOrderByWithRelationInput;
     switch (sort) {
       case "newest":
@@ -57,7 +47,6 @@ export async function GET(request: NextRequest) {
       case "cashout":
         orderBy = { minCashout: "asc" };
         break;
-      case "rating":
       default:
         orderBy = { rating: { sort: "desc", nulls: "last" } };
         break;
@@ -75,13 +64,8 @@ export async function GET(request: NextRequest) {
     ]);
 
     return apiSuccess({
-      platforms,
-      pagination: {
-        page,
-        limit,
-        total,
-        totalPages: Math.ceil(total / limit),
-      },
+      platforms: platforms.map(toPlatform),
+      pagination: { page, limit, total, totalPages: Math.ceil(total / limit) },
     });
   } catch {
     return apiError("Failed to fetch platforms", 500);
