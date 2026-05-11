@@ -13,6 +13,12 @@ export function Footer() {
             <Link href="/compare" className="hover:text-gray-700">
               Compare
             </Link>
+            <Link href="/privacy" className="hover:text-gray-700">
+              Privacy
+            </Link>
+            <Link href="/terms" className="hover:text-gray-700">
+              Terms
+            </Link>
           </div>
         </div>
       </div>

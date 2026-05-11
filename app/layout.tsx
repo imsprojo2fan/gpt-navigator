@@ -44,6 +44,9 @@ export const metadata: Metadata = {
     description:
       "Discover and compare the best get-paid-to (GPT) platforms. Earn money with surveys, games, apps, and videos.",
   },
+  icons: {
+    icon: "/favicon.svg",
+  },
 };
 
 export default function RootLayout({
