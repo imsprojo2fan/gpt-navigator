@@ -1,5 +1,18 @@
 # {{PROJECT_NAME}} — 项目技术方案
 
+<!--
+  使用说明：
+  1. 把本文档发给 Claude Code 或任何 LLM
+  2. 告诉它你的产品需求（做什么、目标用户、商业模式）
+  3. Claude 会基于此模板生成：
+     - project-plan.md（填好所有 {{PLACEHOLDER}} 的具体方案）
+     - CLAUDE.md（该项目专属的开发规范）
+  4. 检查生成的方案 → 让 Claude 按 CLAUDE.md 开始开发
+
+  本模板覆盖：基础设施 / 数据库 / 爬虫 / 前端架构 / SEO / 合规 / 运维
+  所有 {{ALL_CAPS}} 是需要替换的占位符，LLM 会根据你的需求自动填充。
+-->
+
 > 面向 {{TARGET_AUDIENCE}} 的 {{PRODUCT_TYPE}}。
 > {{ONE_LINE_VALUE_PROP}}。
 > 目标用户：{{USER_GEO}} {{USER_LANG}} 用户。
