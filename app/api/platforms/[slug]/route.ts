@@ -3,6 +3,8 @@ import { prisma } from "@/lib/db";
 import { apiSuccess, apiError } from "@/lib/api";
 import { toPlatform } from "@/types/platform";
 
+export const dynamic = "force-dynamic";
+
 export async function GET(
   _request: NextRequest,
   { params }: { params: { slug: string } }
