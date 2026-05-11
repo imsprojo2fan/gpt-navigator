@@ -11,8 +11,6 @@ export async function GET(request: NextRequest) {
     const taskTypes = searchParams.getAll("taskType");
     const paymentMethods = searchParams.getAll("payment");
     const regions = searchParams.getAll("region");
-    const minCashout = searchParams.get("minCashout");
-
     // Sort
     const sort = searchParams.get("sort") || "rating";
 
@@ -85,7 +83,7 @@ export async function GET(request: NextRequest) {
         totalPages: Math.ceil(total / limit),
       },
     });
-  } catch (error) {
+  } catch {
     return apiError("Failed to fetch platforms", 500);
   }
 }

@@ -17,7 +17,7 @@ export async function GET(
     }
 
     return apiSuccess(platform);
-  } catch (error) {
+  } catch {
     return apiError("Failed to fetch platform", 500);
   }
 }

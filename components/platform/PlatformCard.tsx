@@ -1,6 +1,6 @@
 import Link from "next/link";
 import type { Platform, PlatformFeature } from "@/types/platform";
-import { TASK_TYPE_LABELS, PAYMENT_METHOD_LABELS } from "@/types/platform";
+import { TASK_TYPE_LABELS } from "@/types/platform";
 
 type Props = {
   platform: Platform & { features: PlatformFeature[] };
