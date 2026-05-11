@@ -1,8 +1,19 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { prisma } from "@/lib/db";
 import { PlatformCard } from "@/components/platform/PlatformCard";
 import type { TaskType, Region } from "@/types/platform";
 import { TASK_TYPE_LABELS, REGION_LABELS, toPlatform } from "@/types/platform";
+
+export const metadata: Metadata = {
+  alternates: { canonical: "/" },
+  openGraph: {
+    title: "GPT Navigator — Find the Best Get-Paid-To Sites",
+    description:
+      "Compare hundreds of GPT platforms. Earn money with surveys, games, apps, and videos. We track ratings, payouts, and payment methods.",
+    url: "/",
+  },
+};
 
 const CATEGORIES: { type: TaskType; icon: string; color: string }[] = [
   { type: "survey", icon: "📋", color: "bg-purple-50 text-purple-700" },

@@ -6,6 +6,13 @@ export const metadata: Metadata = {
   title: "Blog — GPT Navigator",
   description:
     "Guides, reviews, and tips about get-paid-to platforms. Learn how to maximize your earnings with the best GPT sites.",
+  alternates: { canonical: "/blog" },
+  openGraph: {
+    title: "Blog | GPT Navigator",
+    description:
+      "Guides, reviews, and tips about get-paid-to platforms. Learn how to maximize your earnings with the best GPT sites.",
+    url: "/blog",
+  },
 };
 
 export default function BlogPage() {

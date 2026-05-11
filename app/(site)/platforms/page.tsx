@@ -10,6 +10,13 @@ export const metadata: Metadata = {
   title: "All GPT Platforms",
   description:
     "Browse and compare hundreds of get-paid-to platforms. Filter by task type, payment method, and region.",
+  alternates: { canonical: "/platforms" },
+  openGraph: {
+    title: "All GPT Platforms | GPT Navigator",
+    description:
+      "Browse and compare hundreds of get-paid-to platforms. Filter by task type, payment method, and region.",
+    url: "/platforms",
+  },
 };
 
 export const revalidate = 60;

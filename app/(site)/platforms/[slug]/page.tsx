@@ -29,11 +29,20 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     return { title: "Platform Not Found" };
   }
 
+  const desc =
+    platform.description ||
+    `Read our review of ${platform.name}. See task types, payment methods, minimum cashout, and user ratings.`;
+
   return {
     title: `${platform.name} Review`,
-    description:
-      platform.description ||
-      `Read our review of ${platform.name}. See task types, payment methods, minimum cashout, and user ratings.`,
+    description: desc,
+    alternates: { canonical: `/platforms/${params.slug}` },
+    openGraph: {
+      title: `${platform.name} Review | GPT Navigator`,
+      description: desc,
+      url: `/platforms/${params.slug}`,
+      type: "article",
+    },
   };
 }
 
