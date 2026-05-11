@@ -116,8 +116,8 @@ def upsert_platform(slug: str, name: str, description: str | None,
         with conn.cursor() as cur:
             cur.execute(
                 """
-                INSERT INTO platforms (slug, name, description, website_url, logo_url, min_cashout, trustpilot_score, trustpilot_url, status)
-                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, 'active')
+                INSERT INTO platforms (slug, name, description, website_url, logo_url, min_cashout, trustpilot_score, trustpilot_url, status, updated_at)
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, 'active', NOW())
                 ON CONFLICT (slug) DO UPDATE SET
                     name = EXCLUDED.name,
                     description = EXCLUDED.description,

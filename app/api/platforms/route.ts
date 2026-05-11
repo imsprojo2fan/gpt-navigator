@@ -39,17 +39,11 @@ export async function GET(request: NextRequest) {
       };
     }
 
-    let orderBy: Prisma.PlatformOrderByWithRelationInput;
-    switch (sort) {
-      case "newest":
-        orderBy = { createdAt: "desc" };
-        break;
-      case "cashout":
-        orderBy = { minCashout: "asc" };
-        break;
-      default:
-        orderBy = { rating: { sort: "desc", nulls: "last" } };
-        break;
+    let orderBy: Prisma.PlatformOrderByWithRelationInput = { createdAt: "desc" };
+    if (sort === "newest") {
+      orderBy = { createdAt: "desc" };
+    } else if (sort === "cashout") {
+      orderBy = { minCashout: "asc" };
     }
 
     const [platforms, total] = await Promise.all([
@@ -67,7 +61,9 @@ export async function GET(request: NextRequest) {
       platforms: platforms.map(toPlatform),
       pagination: { page, limit, total, totalPages: Math.ceil(total / limit) },
     });
-  } catch {
+  } catch (e) {
+    const message = e instanceof Error ? e.message : String(e);
+    console.error("platforms API error:", message);
     return apiError("Failed to fetch platforms", 500);
   }
 }

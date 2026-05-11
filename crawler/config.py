@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 load_dotenv(os.path.join(os.path.dirname(__file__), "..", ".env"))
 
 DATABASE_URL = os.getenv("DATABASE_URL", "")
-ANTHROPIC_API_KEY = os.getenv("ANTHROPIC_API_KEY", "")
+DEEPSEEK_API_KEY = os.getenv("DEEPSEEK_API_KEY", "")
 
 if not DATABASE_URL:
     raise RuntimeError("DATABASE_URL is not set")

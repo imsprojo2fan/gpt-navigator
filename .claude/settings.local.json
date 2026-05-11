@@ -33,7 +33,15 @@
       "Bash(npx vercel *)",
       "Bash(git reset *)",
       "Bash(vercel env *)",
-      "Bash(DATABASE_URL=\"postgresql://postgres:HS7k7lgWoL074rbY@db.tfgwybywaifjslttklyr.supabase.co:5432/postgres\" npm run build)"
+      "Bash(DATABASE_URL=\"postgresql://postgres:HS7k7lgWoL074rbY@db.tfgwybywaifjslttklyr.supabase.co:5432/postgres\" npm run build)",
+      "Bash(python3 -c ' *)",
+      "WebFetch(domain:db.tfgwybywaifjslttklyr.supabase.co)",
+      "Bash(DATABASE_URL=\"postgresql://postgres:HS7k7lgWoL074rbY@db.tfgwybywaifjslttklyr.supabase.co:6543/postgres?pgbouncer=true&connection_limit=1&sslmode=no-verify\" npm run dev)",
+      "Bash(kill %1)",
+      "Bash(DATABASE_URL=\"postgresql://postgres:HS7k7lgWoL074rbY@db.tfgwybywaifjslttklyr.supabase.co:6543/postgres?pgbouncer=true&connection_limit=1\" npm run dev)",
+      "Bash(git -C /Users/imsprojo2fan/WebstormProjects/gpt-navigator add app/api/platforms/route.ts app/api/platforms/\\\\[slug\\\\]/route.ts)",
+      "Bash(git -C /Users/imsprojo2fan/WebstormProjects/gpt-navigator commit -m 'Fix API routes: convert Decimal to number via toPlatform before JSON serialization')",
+      "Bash(git -C /Users/imsprojo2fan/WebstormProjects/gpt-navigator push)"
     ]
   }
 }

@@ -1,21 +1,12 @@
 import json
 import logging
 import re
-from anthropic import Anthropic
-from config import ANTHROPIC_API_KEY
+import httpx
+from config import DEEPSEEK_API_KEY
 
 logger = logging.getLogger(__name__)
 
-_client = None
-
-
-def _get_client():
-    global _client
-    if _client is None:
-        if not ANTHROPIC_API_KEY:
-            raise RuntimeError("ANTHROPIC_API_KEY is not set in .env")
-        _client = Anthropic(api_key=ANTHROPIC_API_KEY)
-    return _client
+DEEPSEEK_URL = "https://api.deepseek.com/v1/chat/completions"
 
 PARSE_PROMPT = """Extract information about this "get paid to" / GPT (get-paid-to) platform from the website content below.
 Return ONLY valid JSON, no other text. Use this exact structure:
@@ -42,25 +33,39 @@ Website content:
 
 def parse_html(html: str) -> dict:
     """
-    Send HTML content to Claude and get structured platform data.
+    Send HTML content to DeepSeek and get structured platform data.
     Returns a dict with platform fields, or {"error": "..."} on failure.
     """
-    # Truncate HTML to avoid token limits (Haiku has 200K context, but keep it reasonable)
-    truncated = html[:80000] if len(html) > 80000 else html
+    if not DEEPSEEK_API_KEY:
+        raise RuntimeError("DEEPSEEK_API_KEY is not set in .env")
 
-    prompt = PARSE_PROMPT.format(html=truncated)
+    # Truncate HTML to avoid token limits
+    truncated = html[:80000] if len(html) > 80000 else html
+    prompt = PARSE_PROMPT.replace("{html}", truncated)
 
     try:
-        logger.info("Calling Claude API for parsing...")
-        message = _get_client().messages.create(
-            model="claude-haiku-4-5-20251001",
-            max_tokens=1024,
-            temperature=0,
-            system="You are a data extraction assistant. Always respond with valid JSON only.",
-            messages=[{"role": "user", "content": prompt}],
+        logger.info("Calling DeepSeek API for parsing...")
+        resp = httpx.post(
+            DEEPSEEK_URL,
+            headers={
+                "Authorization": f"Bearer {DEEPSEEK_API_KEY}",
+                "Content-Type": "application/json",
+            },
+            json={
+                "model": "deepseek-chat",
+                "messages": [
+                    {"role": "system", "content": "You are a data extraction assistant. Always respond with valid JSON only."},
+                    {"role": "user", "content": prompt},
+                ],
+                "max_tokens": 1024,
+                "temperature": 0,
+            },
+            timeout=60,
         )
+        resp.raise_for_status()
 
-        raw = message.content[0].text.strip()
+        body = resp.json()
+        raw = body["choices"][0]["message"]["content"].strip()
 
         # Extract JSON from response (handle possible markdown wrapping)
         json_match = re.search(r"\{.*\}", raw, re.DOTALL)
@@ -71,9 +76,12 @@ def parse_html(html: str) -> dict:
         return data
 
     except json.JSONDecodeError as e:
-        logger.error(f"Failed to parse Claude response as JSON: {e}")
+        logger.error(f"Failed to parse DeepSeek response as JSON: {e}")
         logger.debug(f"Raw response: {raw[:500]}")
         return {"error": f"JSON parse error: {e}"}
+    except httpx.HTTPStatusError as e:
+        logger.error(f"DeepSeek API HTTP {e.response.status_code}: {e.response.text[:500]}")
+        return {"error": f"HTTP {e.response.status_code}"}
     except Exception as e:
-        logger.error(f"Claude API call failed: {e}")
+        logger.error(f"DeepSeek API call failed: {e}")
         return {"error": str(e)}
