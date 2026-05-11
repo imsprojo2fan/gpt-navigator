@@ -12,7 +12,7 @@ export const metadata: Metadata = {
     "Browse and compare hundreds of get-paid-to platforms. Filter by task type, payment method, and region.",
 };
 
-export const dynamic = "force-dynamic";
+export const revalidate = 60;
 
 type Props = {
   searchParams: Record<string, string | string[] | undefined>;

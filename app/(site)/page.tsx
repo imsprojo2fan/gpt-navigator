@@ -21,7 +21,7 @@ const REGIONS: { code: Region; flag: string }[] = [
   { code: "Global", flag: "🌍" },
 ];
 
-export const dynamic = "force-dynamic";
+export const revalidate = 60;
 
 export default async function HomePage() {
   const [featured, latest] = await Promise.all([

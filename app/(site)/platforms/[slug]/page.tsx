@@ -17,6 +17,8 @@ type Props = {
   params: { slug: string };
 };
 
+export const revalidate = 300;
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const platform = await prisma.platform.findUnique({
     where: { slug: params.slug },

@@ -14,7 +14,7 @@ export const metadata: Metadata = {
     "Compare get-paid-to platforms side by side. See task types, payment methods, ratings, and minimum cashout.",
 };
 
-export const dynamic = "force-dynamic";
+export const revalidate = 60;
 
 type Props = {
   searchParams: Record<string, string | string[] | undefined>;
