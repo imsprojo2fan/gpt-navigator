@@ -1,0 +1,39 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm --version)",
+      "Bash(cp /Users/imsprojo2fan/WebstormProjects/gpt-navigator/CLAUDE.md /tmp/CLAUDE.md.bak)",
+      "Bash(cp /Users/imsprojo2fan/WebstormProjects/gpt-navigator/project-plan.md /tmp/project-plan.md.bak)",
+      "Bash(npx create-next-app@14 *)",
+      "Bash(npm install *)",
+      "Bash(npx prisma *)",
+      "Bash(psql --version)",
+      "Bash(pg_isready)",
+      "Bash(brew --version)",
+      "Bash(brew install *)",
+      "Bash(brew services *)",
+      "Bash(createdb gpt-navigator *)",
+      "Bash(npm ls *)",
+      "Bash(npm run *)",
+      "Bash(curl -s http://localhost:3000/api/platforms)",
+      "Bash(curl *)",
+      "Bash(psql *)",
+      "Bash(pip3 --version)",
+      "Bash(pip3 install *)",
+      "Bash(DATABASE_URL=\"postgresql://postgres:HS7k7lgWoL074rbY@db.tfgwybywaifjslttklyr.supabase.co:5432/postgres\" npx prisma *)",
+      "Bash(python3 -m json.tool)",
+      "Bash(rm -rf \"/Users/imsprojo2fan/WebstormProjects/gpt-navigator/app/api/admin/crawl-jobs/\\\\[id\\\\]\")",
+      "Bash(mkdir -p '/Users/imsprojo2fan/WebstormProjects/gpt-navigator/app/api/admin/crawl-jobs/[id]/retry')",
+      "Bash(gh auth *)",
+      "Bash(git add *)",
+      "Bash(git rm *)",
+      "Bash(git commit *)",
+      "Bash(git remote *)",
+      "Bash(git push *)",
+      "Bash(npx vercel *)",
+      "Bash(git reset *)",
+      "Bash(vercel env *)",
+      "Bash(DATABASE_URL=\"postgresql://postgres:HS7k7lgWoL074rbY@db.tfgwybywaifjslttklyr.supabase.co:5432/postgres\" npm run build)"
+    ]
+  }
+}
