@@ -1,0 +1,53 @@
+name: Crawler
+
+on:
+  schedule:
+    # Daily at 07:00 UTC (random off-peak time)
+    - cron: "0 7 * * *"
+  workflow_dispatch:
+
+jobs:
+  crawl:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    env:
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install system deps
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq libxml2-dev libxslt-dev
+
+      - name: Install Python deps
+        run: |
+          cd crawler
+          pip install -r requirements.txt
+
+      - name: Install Playwright Chromium
+        run: |
+          cd crawler
+          playwright install chromium
+
+      - name: Discover new platforms
+        run: |
+          cd crawler
+          python main.py discover
+
+      - name: Crawl pending jobs
+        run: |
+          cd crawler
+          python main.py crawl --loop --limit 10
+
+      - name: Update existing platforms
+        run: |
+          cd crawler
+          python main.py update
