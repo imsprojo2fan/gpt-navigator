@@ -20,7 +20,8 @@ export async function GET(
     }
 
     return apiSuccess(toPlatform(platform));
-  } catch {
-    return apiError("Failed to fetch platform", 500);
+  } catch (e) {
+    const message = e instanceof Error ? e.message : String(e);
+    return apiError(message, 500);
   }
 }

@@ -65,7 +65,6 @@ export async function GET(request: NextRequest) {
     });
   } catch (e) {
     const message = e instanceof Error ? e.message : String(e);
-    console.error("platforms API error:", message);
-    return apiError("Failed to fetch platforms", 500);
+    return apiError(message, 500);
   }
 }
