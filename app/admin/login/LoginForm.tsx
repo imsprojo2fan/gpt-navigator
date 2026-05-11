@@ -1,10 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 
 export function LoginForm() {
-  const router = useRouter();
   const searchParams = useSearchParams();
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -23,7 +22,7 @@ export function LoginForm() {
 
     if (res.ok) {
       const redirect = searchParams.get("redirect") || "/admin";
-      router.push(redirect);
+      window.location.href = redirect;
     } else {
       setError("Invalid password");
     }
