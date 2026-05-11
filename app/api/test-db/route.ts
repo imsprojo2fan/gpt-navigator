@@ -1,10 +1,9 @@
-import { NextRequest } from "next/server";
 import { prisma } from "@/lib/db";
 import { apiSuccess, apiError } from "@/lib/api";
 
 export const dynamic = "force-dynamic";
 
-export async function GET(_request: NextRequest) {
+export async function GET() {
   try {
     const count = await prisma.platform.count();
     return apiSuccess({ db: "ok", count });
